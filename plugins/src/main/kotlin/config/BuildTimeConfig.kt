@@ -9,13 +9,13 @@
 package config
 
 object BuildTimeConfig {
-    const val APPLICATION_ID = "io.element.android.x"
-    const val APPLICATION_NAME = "Element X"
-    val METADATA_HOST_REVERSED: String? = null
+    const val APPLICATION_ID = "co.hanto.app"
+    const val APPLICATION_NAME = "Hanto"
+    val METADATA_HOST_REVERSED: String? = "co.hanto"
     val OAUTH_CLIENT_URL_PATH: String? = "apps/android"
-    val URL_WEBSITE: String? = null
+    val URL_WEBSITE: String? = "https://hanto.co"
     val URL_LOGO: String? = null
-    val URL_COPYRIGHT: String? = null
+    val URL_COPYRIGHT: String? = "© Hanto Workspace Technologies Private Limited"
     val URL_ACCEPTABLE_USE: String? = null
     val URL_PRIVACY: String? = null
     val URL_POLICY: String? = null

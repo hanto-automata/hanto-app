@@ -68,6 +68,11 @@ sealed interface AccountProvider {
     }
 }
 
+/**
+ * Hanto fork: default account provider points at our Synapse (automata.hanto.co). Variable name
+ * kept for now to avoid churning dozens of call sites in the first-pass fork — follow-up rename
+ * once the smoke-test confirms login works end-to-end.
+ */
 val matrixOrgAccountProvider = AccountProvider.Generic(
-    serverName = "matrix.org",
+    serverName = "automata.hanto.co",
 )
