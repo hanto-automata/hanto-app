@@ -97,6 +97,27 @@ android {
             storeFile = file("./signature/debug.keystore")
             storePassword = "android"
         }
+        // HAN-304: Hanto release signing. Reads keystore path + passwords from env or
+        // ~/.gradle/gradle.properties. NEVER commit real values. Defaults fall through to
+        // the debug keystore so unsigned-local builds still succeed.
+        register("hantoRelease") {
+            val storeFilePath = environmentOrGradleValue("HANTO_KEYSTORE_FILE", "hanto.keystore.file") ?: ""
+            val storePwd = environmentOrGradleValue("HANTO_KEYSTORE_PASSWORD", "hanto.keystore.password") ?: ""
+            val keyAliasValue = environmentOrGradleValue("HANTO_KEYSTORE_ALIAS", "hanto.keystore.alias") ?: "hanto-release"
+            val keyPwd = environmentOrGradleValue("HANTO_KEY_PASSWORD", "hanto.key.password") ?: storePwd
+            if (storeFilePath.isNotBlank()) {
+                storeFile = file(storeFilePath)
+                storePassword = storePwd
+                keyAlias = keyAliasValue
+                keyPassword = keyPwd
+            } else {
+                // Fallback for CI / local dev without secrets set — same as debug.
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+                storeFile = file("./signature/debug.keystore")
+                storePassword = "android"
+            }
+        }
         register("nightly") {
             keyAlias = environmentOrGradleValue("ELEMENT_ANDROID_NIGHTLY_KEYID", "signing.element.nightly.keyId")
             keyPassword = environmentOrGradleValue("ELEMENT_ANDROID_NIGHTLY_KEYPASSWORD", "signing.element.nightly.keyPassword")
@@ -133,7 +154,8 @@ android {
                 "login_redirect_scheme",
                 oAuthRedirectSchemeBase,
             )
-            signingConfig = signingConfigs.getByName("debug")
+            // HAN-304: release builds use the Hanto keystore when env secrets are set, else debug.
+            signingConfig = signingConfigs.getByName("hantoRelease")
 
             optimization {
                 enable = true
