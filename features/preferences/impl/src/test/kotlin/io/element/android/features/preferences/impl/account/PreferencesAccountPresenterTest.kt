@@ -91,7 +91,7 @@ class PreferencesAccountPresenterTest {
     }
 
     @Test
-    fun `present - secure backup badge`() = runTest {
+    fun `present - app backup badge`() = runTest {
         val indicatorService = FakeIndicatorService()
         createPreferencesAccountPresenter(
             matrixClient = FakeMatrixClient(
@@ -108,7 +108,7 @@ class PreferencesAccountPresenterTest {
     }
 
     @Test
-    fun `present - secure backup is shown when the session does not need to be verified`() = runTest {
+    fun `present - app backup is shown when the session does not need to be verified`() = runTest {
         val sessionVerificationService = FakeSessionVerificationService()
         createPreferencesAccountPresenter(
             matrixClient = FakeMatrixClient(
@@ -117,7 +117,7 @@ class PreferencesAccountPresenterTest {
             ),
             sessionVerificationService = sessionVerificationService,
         ).test {
-            // The session needs to be verified, so the secure backup entry is hidden.
+            // The session needs to be verified, so the app backup entry is hidden.
             consumeItemsUntilPredicate { !it.showSecureBackup }
             sessionVerificationService.emitNeedsSessionVerification(false)
             consumeItemsUntilPredicate { it.showSecureBackup }
